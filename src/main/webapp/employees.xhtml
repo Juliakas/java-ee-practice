@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head/>
+<h:body>
+    <h2>Employees working for #{modelEmployeesInComp.comp.name}</h2>
+        <table border = "solid">
+            <thead style = "font-weight: bold">
+                <tr>
+                    <th>ID</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Total # of subordinates</th>
+                    <th>Manager's first name</th>
+                    <th>Manager's last name</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+            <ui:repeat value="#{modelEmployeesInComp.employees}" var="emp">
+                <tr>
+                    <td>#{emp.empId}</td>
+                    <td>#{emp.firstName}</td>
+                    <td>#{emp.lastName}</td>
+                    <td>#{emp.subordinates.size()}</td>
+                    <td>#{emp.manager.firstName}</td>
+                    <td>#{emp.manager.lastName}</td>
+                    <td><h:form><h:commandButton value="Remove"
+                                                 action="#{modelEmployeesInComp.deleteEmployee}">
+                            <f:param name="empId" value="#{emp.empId}"/>
+                            <f:param name="compId" value="#{param['compId']}"/>
+                        </h:commandButton></h:form>
+                    </td>
+                </tr>
+            </ui:repeat>
+            </tbody>
+        </table>
+    </h:body>
+</html>

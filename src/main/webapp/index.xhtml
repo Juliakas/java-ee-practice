@@ -2,20 +2,50 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
->
+      xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head/>
 <h:body>
-    <h2>Teams:</h2>
-    <ol>
-        <ui:repeat value="#{teams.allTeams}" var="team">
-            <li><h:link value="#{team.name}" outcome="players?teamId=#{team.id}" /></li>
-        </ui:repeat>
-    </ol>
+<!--    <h2>Teams:</h2>-->
+<!--    <ol>-->
+<!--        <ui:repeat value="#{teams.allTeams}" var="team">-->
+<!--            <li><h:link value="#{team.name}" outcome="players?teamId=#{team.id}" /></li>-->
+<!--        </ui:repeat>-->
+<!--    </ol>-->
+<!--    <h:form>-->
+<!--        <h:inputText value="#{teams.teamToCreate.name}" required="true" />-->
+<!--        <h:commandButton value="Add new team" action="#{teams.createTeam}" />-->
+<!--    </h:form>-->
+<!--    <h:link outcome="myBatis/teams" value="MyBatis implementation"/>-->
+<!--    <h2>#{TestingNamed.sakykLabas()}</h2>-->
+
+    <h2>Companies</h2>
     <h:form>
-        <h:inputText value="#{teams.teamToCreate.name}" required="true" />
-        <h:commandButton value="Add new team" action="#{teams.createTeam}" />
+        <h:inputText a:placeholder="filter by name" value="#{modelCompanies.nameFilter}" required="true" />
+        <h:commandButton value="Filter" action="#{modelCompanies.getFilteredByName}">
+<!--            <f:ajax render=":comp_list"/>-->
+        </h:commandButton>
     </h:form>
-    <h:link outcome="myBatis/teams" value="MyBatis implementation"/>
+    <table border = "solid">
+        <thead style = "font-weight: bold">
+            <tr>
+                <th>ID</th>
+                <th>Company Name</th>
+                <th>Company registration number</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ui:repeat value="#{modelCompanies.companies}" var="comp">
+                <tr>
+                    <td><h:link value="#{comp.compId}" outcome="employees?compId=#{comp.compId}" /></td>
+                    <td>#{comp.name}</td>
+                    <td>#{comp.compRegNo}</td>
+                </tr>
+            </ui:repeat>
+        </tbody>
+
+    </table>
+
 </h:body>
 </html>
