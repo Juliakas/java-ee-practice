@@ -35,4 +35,8 @@ public class Employee {
 
     @OneToMany(mappedBy = "manager")
     private Collection<Employee> subordinates;
+
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private long version;
 }

@@ -8,7 +8,7 @@ import java.util.Collection;
 @Entity
 @Table(name = "COMPANIES")
 @NamedQueries({
-        @NamedQuery(name = "Companies.getAll", query = "SELECT c FROM Company c"),
+        @NamedQuery(name = "Companies.getAll", query = "SELECT c FROM Company c", lockMode = LockModeType.OPTIMISTIC),
         @NamedQuery(name = "Companies.filterByName",
                 query = "SELECT c FROM Company c WHERE c.name LIKE CONCAT('%',:name,'%')")
 })
@@ -28,4 +28,8 @@ public class Company {
 
     @OneToMany(mappedBy = "company")
     private Collection<Employee> employees;
+
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private long version;
 }

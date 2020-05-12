@@ -7,19 +7,6 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head/>
 <h:body>
-<!--    <h2>Teams:</h2>-->
-<!--    <ol>-->
-<!--        <ui:repeat value="#{teams.allTeams}" var="team">-->
-<!--            <li><h:link value="#{team.name}" outcome="players?teamId=#{team.id}" /></li>-->
-<!--        </ui:repeat>-->
-<!--    </ol>-->
-<!--    <h:form>-->
-<!--        <h:inputText value="#{teams.teamToCreate.name}" required="true" />-->
-<!--        <h:commandButton value="Add new team" action="#{teams.createTeam}" />-->
-<!--    </h:form>-->
-<!--    <h:link outcome="myBatis/teams" value="MyBatis implementation"/>-->
-<!--    <h2>#{TestingNamed.sakykLabas()}</h2>-->
-
     <h2>Companies</h2>
     <h:form>
         <h:inputText a:placeholder="filter by name" value="#{modelCompanies.nameFilter}" required="true" />
@@ -38,14 +25,19 @@
         <tbody>
             <ui:repeat value="#{modelCompanies.companies}" var="comp">
                 <tr>
-                    <td><h:link value="#{comp.compId}" outcome="employees?compId=#{comp.compId}" /></td>
-                    <td>#{comp.name}</td>
+                    <td>#{comp.compId}</td>
+                    <td><h:link value="#{comp.name}" outcome="employees?compId=#{comp.compId}" /></td>
                     <td>#{comp.compRegNo}</td>
                 </tr>
             </ui:repeat>
         </tbody>
-
     </table>
+    <h:form>
+        <p>Change company name</p>
+        <h:inputText a:placeholder="ID" value="#{modelCompanies.newNameId}"/>
+        <h:inputText a:placeholder="New name" value="#{modelCompanies.newName}"/>
+        <h:commandButton value="Rename" action="#{modelCompanies.changeCompanyName}"/>
+    </h:form>
 
 </h:body>
 </html>

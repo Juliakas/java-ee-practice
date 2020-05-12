@@ -76,6 +76,11 @@ public class EmployeesDAOTest implements IEmployeesDAO {
         return database.stream().filter(emp -> emp.getEmpId() == empId).findFirst().orElseThrow(RuntimeException::new);
     }
 
+    @Override
+    public Employee getForUpdate(long empId) {
+        return get(empId);
+    }
+
     public Employee insert(Employee emp) {
         return database.add(emp) ? emp : null;
     }

@@ -1,4 +1,4 @@
-package com.github.juliakas.businessLogic.model;
+package com.github.juliakas.businessLogic.jsfModel;
 
 import com.github.juliakas.businessLogic.DeleteEmployee;
 import com.github.juliakas.entities.Company;

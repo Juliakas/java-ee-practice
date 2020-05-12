@@ -1,29 +1,20 @@
 package com.github.juliakas.persistence;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
-import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.Specializes;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import javax.persistence.SynchronizationType;
 
 @ApplicationScoped
-public class Resources {
+public class Resources extends ResourcesBase {
 
-    @PersistenceUnit(unitName = "CompanyPU")
-    private EntityManagerFactory emf;
-
+    @Override
+    @Specializes
     @Produces
-    @Default
-    @RequestScoped
-    private EntityManager createJTAEntityManager() {
-        return emf.createEntityManager(SynchronizationType.SYNCHRONIZED);
-    }
-
-    private void closeDefaultEntityManager(@Disposes @Default EntityManager em) {
-        em.close();
+    public EntityManager createJTAEntityManager() {
+        System.out.println("Resources class");
+        return super.createJTAEntityManager();
     }
 }

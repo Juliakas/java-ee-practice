@@ -1,10 +1,12 @@
 package com.github.juliakas.persistence;
 
 import com.github.juliakas.entities.Company;
+import com.github.juliakas.interceptors.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.transaction.Transactional;
 import java.util.Collection;
 
@@ -12,6 +14,7 @@ import java.util.Collection;
 public class CompaniesDAO {
 
     @Inject
+    //@Named("SecondaryEntityManager")
     private EntityManager em;
 
     @Transactional
@@ -20,7 +23,9 @@ public class CompaniesDAO {
     }
 
     @Transactional
+    @Logger
     public Collection<Company> getByName(String name) {
+        if (name.equals("Bad name")) throw new RuntimeException("Oh no!");
         return em.createNamedQuery("Companies.filterByName", Company.class)
                 .setParameter("name", name).getResultList();
     }
@@ -31,9 +36,21 @@ public class CompaniesDAO {
     }
 
     @Transactional
+    public Company get(long compId, LockModeType lockMode) {
+        Company comp = em.find(Company.class, compId);
+        em.lock(comp, lockMode);
+        return comp;
+    }
+
+    @Transactional
     public Company insert(Company comp) {
         em.persist(comp);
         return comp;
+    }
+
+    public void commit() {
+        em.flush();
+        em.getTransaction().commit();
     }
 
     @Transactional

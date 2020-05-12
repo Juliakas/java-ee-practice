@@ -8,6 +8,13 @@
 
     <alternatives>
 <!--         <class>com.github.juliakas.persistence.EmployeesDAOTest</class>-->
+        <class>com.github.juliakas.persistence.ResourcesSecondary</class>
     </alternatives>
+    <interceptors>
+<!--        <class>com.github.juliakas.interceptors.LoggerInterceptor</class>-->
+    </interceptors>
+    <decorators>
+<!--        <class>com.github.juliakas.interceptors.EmployeesFilterFilter</class>-->
+    </decorators>
 
 </beans>
