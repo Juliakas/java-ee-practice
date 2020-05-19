@@ -32,8 +32,17 @@ public class EmployeesController {
     @PUT
     @Produces({"application/json", "application/xml"})
     public Response put(@PathParam("id") final long empId, @Valid EmployeeModel updatedEmp) {
-        EmployeeModel emp = employeeLogic.insertOrUpdate(empId, updatedEmp);
-        return Response.ok(emp).build();
+        try {
+            EmployeeModel emp = employeeLogic.insertOrUpdate(empId, updatedEmp);
+            return Response.ok(emp).build();
+        } catch (RollbackException e) {
+            if (e.getCause() instanceof OptimisticLockException) {
+                return put(empId, updatedEmp);
+            }
+            else {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Path("/")

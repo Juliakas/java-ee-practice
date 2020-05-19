@@ -5,6 +5,7 @@ import com.github.juliakas.entities.Employee;
 import com.github.juliakas.persistence.CompaniesDAO;
 import com.github.juliakas.persistence.IEmployeesDAO;
 import lombok.SneakyThrows;
+import org.hibernate.StaleObjectStateException;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -29,7 +30,7 @@ public class EmployeeLogic {
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    public EmployeeModel insertOrUpdate(long empId, EmployeeModel empModel) {
+    public EmployeeModel insertOrUpdate(long empId, EmployeeModel empModel) throws RollbackException {
         Employee entityToUpdate = employeesDAO.get(empId);
         long version = entityToUpdate == null ? 1 : entityToUpdate.getVersion();
         empModel.setEmpId(empId);
@@ -40,16 +41,8 @@ public class EmployeeLogic {
         }
         Employee entity = empModel.convertToEntity(employeesDAO, companiesDAO);
         entity.setVersion(version);
-        try {
-            entity = employeesDAO.insertOrUpdate(entity);
-            return EmployeeModel.buildFromEntity(entity);
-        } catch(RollbackException e) {
-            if (e.getCause() instanceof OptimisticLockException) {
-                System.out.println("Optimistic Lock Exception, retrying...");
-                insertOrUpdate(empId, empModel);
-            }
-            throw new RuntimeException(e);
-        }
+        entity = employeesDAO.insertOrUpdate(entity);
+        return EmployeeModel.buildFromEntity(entity);
     }
 
     @SneakyThrows
